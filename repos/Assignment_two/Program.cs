@@ -94,14 +94,14 @@ namespace Assignment_two
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
         }
             
-        public void DepositToAccount()
+        public void DepositToAccount(BankAccount bankAccount,int value)
         {
-
-        }
+            bankAccount.Deposit(value);
+        } 
         
-        public void WithdrawFromAccount()
+        public void WithdrawFromAccount(BankAccount bankAccount, int value)
         {
-
+            bankAccount.withdrawal(value);
         }
 
         public void display()
@@ -118,7 +118,7 @@ namespace Assignment_two
     {
         static void Main(string[] args)
         {
-            int op;
+            //int op;
             
             BankAccount bankacct1 = new BankAccount(123456789, "Osama", 1000);
          CheckingAccount bankacct2 = new CheckingAccount(123456790, "Bin", 100);
