@@ -1,16 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+ 
 
 namespace Assignment_two
 {
+    public interface IBankAccount                            // Interface use 'I; with the name : Pro approach
+    {
+        void Deposit(int value);
+        void withdrawal(int value);
 
-    public class BankAccount
+    }
+
+    public abstract class BankAccount : IBankAccount                        //Inheritance + Abstract BASE class 
     {
 
-        public int accountnumber { get; set; }
+        public int accountnumber { get; set; }               //Stated in the lecture the getters and setters are public whereas the accountnumber attribute is "Private" :)
         public string name { get; set; }
         public int balance { get; set; }
 
@@ -21,17 +28,14 @@ namespace Assignment_two
             balance = Balance;
         }
 
-        public void DisplayAccountInfo()
-        {
-            Console.WriteLine($"Account Number : {accountnumber} \n Account Name : {name} \n Account Balance : {balance}");
-        }
+        public abstract void DisplayAccountInfo();                        // Abstract function 
 
-        public virtual void Deposit(int value)
+        public void Deposit(int value)
         {
             balance += value;
-            Console.WriteLine($"The amount {value} has been deposited in your bank account ");
+            Console.WriteLine($" The amount {value} has been deposited in your bank account \n");
         }
-        public virtual void withdrawal(int value)
+        public void withdrawal(int value)
         {
             balance -= value;
             Console.WriteLine($"The amount {value} has been withdrawed in your bank account ");
@@ -48,11 +52,16 @@ namespace Assignment_two
             interestrate = InterestRate;
         }
 
-        public override void Deposit(int value)
+        public void Deposit(int value)
         {
-            balance -= value;
+            int I = ((interestrate / 100) * value);
+            balance -= (I+value);
             Console.WriteLine($"The amount {value} has been withdrawed in your bank account ");
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
+        }
+        public override void DisplayAccountInfo()                              // Abstract function Override
+        {
+            Console.WriteLine($"\nAccount Name : {name} \n Account Number : {accountnumber} \n Account Balance ($) : {balance}");
         }
 
 
@@ -64,41 +73,49 @@ namespace Assignment_two
         {
             //Empty
         }
-        public override void withdrawal(int value) 
+        public void withdrawal(int value)
         {
             if (balance - value < 0)
             {
                 Console.WriteLine($"You cannot proceed with the withdrawal as your account has {base.balance}");
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
             }
-            balance -= value;
-            Console.WriteLine($"The amount {value} has been withdrawed in your bank account ");
-            Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
+            else
+            {
+                balance -= value;
+                Console.WriteLine($"The amount {value} has been withdrawed in your bank account ");
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
+            }
         }
+        public override void DisplayAccountInfo()                                                      // Abstract function Override 
+        {
+            Console.WriteLine($"\nAccount Name : {name} \n Account Number : {accountnumber} \n Account Balance ($) : {balance}");
+        }
+
     }
 
     public class Bank
     {
-        public List<BankAccount> Abank { get; set; }
+        public List <BankAccount> list_of_banks { get; set; }
         public Bank()
         {
-            Abank = new List<BankAccount>();
+            list_of_banks = new List<BankAccount>();
 
         }
 
-        public void AddAccount( BankAccount bankAccount )
+        public void AddAccount(BankAccount bankAccount)
         {
-            Abank.Add(bankAccount);
-            Console.Write($"\nThe bank account has been added\n");
-            Console.WriteLine($" Account Number : {bankAccount.accountnumber} \n Account Name : {bankAccount.name} \n Account Balance : {bankAccount.balance}");
+            list_of_banks.Add(bankAccount);
+            Console.Write($"\n\t\t\t\t\t\t\tNew Account Created\t\n");
+            Console.WriteLine($" Account Number : {bankAccount.accountnumber} \n Account Name : {bankAccount.name} \n Account Balance ($) : {bankAccount.balance}");
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
         }
-            
-        public void DepositToAccount(BankAccount bankAccount,int value)
+
+        public void DepositToAccount(BankAccount bankAccount, int value)
         {
             bankAccount.Deposit(value);
-        } 
-        
+        }
+
         public void WithdrawFromAccount(BankAccount bankAccount, int value)
         {
             bankAccount.withdrawal(value);
@@ -106,9 +123,9 @@ namespace Assignment_two
 
         public void display()
         {
-            foreach (var item in Abank)
+            foreach (BankAccount item in list_of_banks)
             {
-                Console.WriteLine($" Account Number : {item.accountnumber} \n Account Name : {item.name} \n Account Balance : {item.balance}");
+                Console.WriteLine($" Account Number : {item.accountnumber} \n Account Name : {item.name} \n Account Balance ($) : {item.balance}");
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
             }
         }
@@ -119,12 +136,16 @@ namespace Assignment_two
         static void Main(string[] args)
         {
             //int op;
-            
-            BankAccount bankacct1 = new BankAccount(123456789, "Osama", 1000);
-         CheckingAccount bankacct2 = new CheckingAccount(123456790, "Bin", 100);
-            BankAccount bankacct3 = new BankAccount(123456791, "Nadeem", 10);
+            //int an;
+            //int va;
+
+            SavingsAccount bankacct1 = new SavingsAccount(123456789, "Osama", 1000,12);
+            CheckingAccount bankacct2 = new CheckingAccount(123456790, "Bin", 100);
+            BankAccount bankacct3 = new SavingsAccount(123456791, "Nadeem", 10,12);
 
             Bank bank = new Bank();
+
+
             bank.AddAccount(bankacct1);
             bank.AddAccount(bankacct2);
             bank.AddAccount(bankacct3);
@@ -133,7 +154,20 @@ namespace Assignment_two
             bankacct2.withdrawal(101);
             bankacct3.Deposit(25);
 
+            //Console.WriteLine("Please select a option : \n1.Deposit \n2.Withdraw");
+            //op = Convert.ToInt16(Console.ReadLine());
 
+            //switch(op)
+            //{
+            //    case 1:
+            //        {
+            //            Console.WriteLine("Enter the Account Number : ");
+            //             an = Convert.ToInt16(Console.ReadLine());
+            //            Console.WriteLine("Enter the Amount to be deposited : ");
+            //             va = Convert.ToInt16(Console.ReadLine());
+            //            bank.DepositToAccount(an, va);
+            //            break;
+            //        }
 
 
 
