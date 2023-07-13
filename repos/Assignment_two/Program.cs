@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+
 
 namespace Assignment_two
 {
@@ -55,13 +55,13 @@ namespace Assignment_two
         public void Deposit(int value)
         {
             int I = ((interestrate / 100) * value);
-            balance -= (I+value);
+            balance = balance - (I + value);
             Console.WriteLine($"The amount {value} has been withdrawed in your bank account ");
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
         }
         public override void DisplayAccountInfo()                              // Abstract function Override
         {
-            Console.WriteLine($"\nAccount Name : {name} \n Account Number : {accountnumber} \n Account Balance ($) : {balance}");
+            Console.WriteLine($"\nSavings Account\nAccount Name : {name} \n Account Number : {accountnumber} \n Account Balance ($) : {balance}");
         }
 
 
@@ -77,7 +77,7 @@ namespace Assignment_two
         {
             if (balance - value < 0)
             {
-                Console.WriteLine($"You cannot proceed with the withdrawal as your account has {base.balance}");
+                Console.WriteLine($"\nWARNING\nYou cannot proceed with the withdrawal as your account has {base.balance}");
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
             }
             else
@@ -96,7 +96,7 @@ namespace Assignment_two
 
     public class Bank
     {
-        public List <BankAccount> list_of_banks { get; set; }
+        public List<BankAccount> list_of_banks { get; set; }
         public Bank()
         {
             list_of_banks = new List<BankAccount>();
@@ -135,17 +135,20 @@ namespace Assignment_two
     {
         static void Main(string[] args)
         {
-            //int op;
-            //int an;
-            //int va;
+            int op;
+            int an;
+            int va;
 
-            SavingsAccount bankacct1 = new SavingsAccount(123456789, "Osama", 1000,12);
-            CheckingAccount bankacct2 = new CheckingAccount(123456790, "Bin", 100);
-            BankAccount bankacct3 = new SavingsAccount(123456791, "Nadeem", 10,12);
+
+
+            SavingsAccount bankacct1 = new SavingsAccount(1234567890, "Osama", 1000, 12);  //Dummy Database
+            CheckingAccount bankacct2 = new CheckingAccount(1234567980, "Bin", 100);
+            SavingsAccount bankacct3 = new SavingsAccount(123456791, "Nadeem", 10, 12);
+
+
+            //BankAccount bankAccount = new BankAccount();        //Cannot create an instance of Abstract Class :(
 
             Bank bank = new Bank();
-
-
             bank.AddAccount(bankacct1);
             bank.AddAccount(bankacct2);
             bank.AddAccount(bankacct3);
@@ -154,42 +157,91 @@ namespace Assignment_two
             bankacct2.withdrawal(101);
             bankacct3.Deposit(25);
 
-            //Console.WriteLine("Please select a option : \n1.Deposit \n2.Withdraw");
-            //op = Convert.ToInt16(Console.ReadLine());
+        jump:
+            Console.WriteLine("\t\t\t\t\t\t\tPlease select a option : \n\t\t\t\t\t\t\t1.Deposit \n\t\t\t\t\t\t\t2.Withdraw \n\t\t\t\t\t\t\t3.Exit from the Bank");
+            op = Convert.ToInt16(Console.ReadLine());
 
-            //switch(op)
-            //{
-            //    case 1:
-            //        {
-            //            Console.WriteLine("Enter the Account Number : ");
-            //             an = Convert.ToInt16(Console.ReadLine());
-            //            Console.WriteLine("Enter the Amount to be deposited : ");
-            //             va = Convert.ToInt16(Console.ReadLine());
-            //            bank.DepositToAccount(an, va);
-            //            break;
-            //        }
+            switch (op)
+            {
+                case 1:
+                    {
+
+                        Console.WriteLine("Enter the Account Number : ");
+                        an = Convert.ToInt32(Console.ReadLine());
+
+                        foreach (BankAccount item in bank.list_of_banks)                           //checking the dummy datbase
+                        {
+
+                            if (an == item.accountnumber)                                           // int item.accountnumber
+                            {
+                                Console.Write("WELCOME\t" + item.name );
+                                Console.WriteLine("\nEnter the Amount to be deposited : ");
+                                va = Convert.ToInt16(Console.ReadLine());
+
+                                //Boxing 
+                                bank.DepositToAccount(item, va);
+                                Console.WriteLine($" Account Number : {item.accountnumber} \n Account Name : {item.name} \n Account Balance ($) : {item.balance}");
+                                Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
+
+                            }
+                            else
+                            {
+                                //Console.Write($"There is no Such account with Account Number {an} ");
+                            }
+                        }
+                        goto jump;
+                        break;
+                    }
+                case 2:
+                    {
+                        Console.WriteLine("Enter the Account Number : ");
+                        an = Convert.ToInt32(Console.ReadLine());
+
+                        foreach (BankAccount item in bank.list_of_banks)                            //using item as a  
+                        {
+
+                            if (an == item.accountnumber)                                           // int item.accountnumber
+                            {
+                                Console.Write("WELCOME" + item.name);
+                                Console.WriteLine("\nEnter the Amount to be Withdrawed : ");
+                                va = Convert.ToInt16(Console.ReadLine());
 
 
+                                bank.DepositToAccount(item, va);
+                                Console.WriteLine($" Account Number : {item.accountnumber} \n Account Name : {item.name} \n Account Balance ($) : {item.balance}");
+                                Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
 
-            bank.display();
+                            }
+                            else
+                            {
+                                //Console.Write($"There is no Such account with Account Number {an} ");
+                            }
+                        }
 
-            //jump:
-            //Console.WriteLine("Please select an option : \n 1. Deposit \n 2. Withdraw \n 3. Display Accounts \n 4. Leave the Bank");
-            //op = Convert.ToInt16(Console.ReadLine());
+                        goto jump;
+                        break;
+                    }
+                case 3:
+                    {
 
-            //switch(op)
-            //{
-            //    case 1:
+                        Console.WriteLine($"\nYou have left the bank :(\nHave a Nice Day !\n\n Enter any key to close the prompt......................");
+                        break;
+                    }
+                default:
+                    {
+                        goto jump;
+                    }
+            }
 
-            //        break;
-
-            //    default:
-            //        Console.Write("Invalid Operation");
-            //        break;
-            //}
-            //goto jump;
 
             Console.ReadLine();
+
+
+
         }
+
     }
 }
+          
+            
+   
