@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace Assignment_two
 {
+    public interface ITransaction
+    {
+        void ExecuteTransaction(double value);
+
+        void PrintTransaction();
+    }
     public interface IBankAccount                            // Interface use 'I; with the name : Pro approach
     {
         void Deposit(int value);
@@ -44,7 +50,7 @@ namespace Assignment_two
 
     }
 
-    public class SavingsAccount : BankAccount
+    public class SavingsAccount : BankAccount , ITransaction
     {
         public int interestrate { get; set; }
         public SavingsAccount(int AccountNumber, string Name, int Balance, int InterestRate) : base(AccountNumber, Name, Balance)
@@ -64,10 +70,18 @@ namespace Assignment_two
             Console.WriteLine($"\nSavings Account\nAccount Name : {name} \n Account Number : {accountnumber} \n Account Balance ($) : {balance}");
         }
 
+        public void ExecuteTransaction(double value)
+        {
+
+        }
+       public void PrintTransaction()
+        {
+
+        }
 
     }
 
-    public class CheckingAccount : BankAccount
+    public class CheckingAccount : BankAccount, ITransaction
     {
         public CheckingAccount(int AccountNumber, string Name, int Balance) : base(AccountNumber, Name, Balance)
         {
@@ -91,7 +105,32 @@ namespace Assignment_two
         {
             Console.WriteLine($"\nAccount Name : {name} \n Account Number : {accountnumber} \n Account Balance ($) : {balance}");
         }
+        public void ExecuteTransaction(double value)
+        {
 
+        }
+        public void PrintTransaction()
+        {
+
+        }
+
+
+    }
+
+    public class LoanAccount: ITransaction
+    {
+        public LoanAccount ()
+        {
+            //Empty Constructor
+        }
+        public void ExecuteTransaction(double value)
+        {
+
+        }
+        public void PrintTransaction()
+        {
+
+        }
     }
 
     public class Bank
@@ -174,7 +213,7 @@ namespace Assignment_two
 
                             if (an == item.accountnumber)                                           // int item.accountnumber
                             {
-                                Console.Write("WELCOME\t" + item.name );
+                                Console.Write("WELCOME\t" + item.name);
                                 Console.WriteLine("\nEnter the Amount to be deposited : ");
                                 va = Convert.ToInt16(Console.ReadLine());
 
@@ -242,6 +281,5 @@ namespace Assignment_two
 
     }
 }
-          
-            
-   
+
+
